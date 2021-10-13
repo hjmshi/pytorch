@@ -73,7 +73,7 @@ std::vector<Value> Util::Clone(
           << "Bad post-order: " << node->ToString();
       inputs.emplace_back(it->second, output.index);
     }
-    clone_map[node] = node->Clone(inputs);
+    clone_map[node] = node->Clone(at::ArrayRef<Value>(inputs));
   }
 
   std::vector<Value> cloned;

@@ -12,8 +12,8 @@ NllLoss2d::NllLoss2d(const Value& logits, const Value& labels,
                      const c10::optional<Value>& weight,
                      ReductionMode reduction, int ignore_index)
     : TsNode(ir::OpKind(at::aten::nll_loss2d),
-           lazy_tensors::util::GetValuesVector<Value>({logits, labels},
-                                                      {&weight}),
+           at::ArrayRef<Value>(lazy_tensors::util::GetValuesVector<Value>({logits, labels},
+                                                      {&weight})),
            /*num_outputs=*/1,
            torch::lazy::MHash(
                lazy_tensors::util::GetEnumValue(reduction), ignore_index)),

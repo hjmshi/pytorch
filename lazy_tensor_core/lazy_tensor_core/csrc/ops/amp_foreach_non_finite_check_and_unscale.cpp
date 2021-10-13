@@ -37,14 +37,14 @@ std::vector<Value> GetOperandList(lazy_tensors::Span<const Value> operands,
 AmpForachNonFiniteCheckAndUnscale::AmpForachNonFiniteCheckAndUnscale(
     const OpList& inputs, const Value& found_inf, const Value& inv_scale)
     : TsNode(ir::OpKind(at::aten::_amp_foreach_non_finite_check_and_unscale_),
-           GetOperandList(inputs, found_inf, inv_scale),
+           at::ArrayRef<Value>(GetOperandList(inputs, found_inf, inv_scale)),
            NodeOutputShape(inputs, found_inf),
            /*num_outputs=*/inputs.size() + 1) {}
 
 NodePtr AmpForachNonFiniteCheckAndUnscale::Clone(OpList operands) const {
   std::vector<Value> operand_list(operands.begin(), operands.end() - 2);
   size_t sz = operand_list.size();
-  return MakeNode<AmpForachNonFiniteCheckAndUnscale>(operand_list, operands[sz],
+  return MakeNode<AmpForachNonFiniteCheckAndUnscale>(at::ArrayRef<Value>(operand_list), operands[sz],
                                                      operands[sz + 1]);
 }
 

@@ -13,9 +13,9 @@
 #include <vector>
 
 #include "c10/core/ScalarType.h"
+#include "c10/util/ArrayRef.h"
 #include "lazy_tensor_core/csrc/python_util.h"
 #include "lazy_tensors/computation_client/types.h"
-#include "lazy_tensors/span.h"
 #include "torch/csrc/lazy/core/hash.h"
 
 namespace torch_lazy_tensors {
@@ -145,7 +145,7 @@ inline std::ostream& operator<<(std::ostream& stream, const OpKind& op) {
   return stream;
 }
 
-using OpList = lazy_tensors::Span<const Value>;
+using OpList = at::ArrayRef<const Value>;
 
 void EmitShortFrameInfo(std::ostream& stream,
                         const std::vector<SourceLocation>& frames);
