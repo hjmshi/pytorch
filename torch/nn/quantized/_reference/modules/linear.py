@@ -3,6 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from typing import Optional, Dict, Any
 from .utils import _quantize_and_dequantize_weight
+from .utils import _quantize_weight
 from .utils import _save_weight_qparams
 from .utils import _get_weight_qparam_keys
 
@@ -68,6 +69,11 @@ class Linear(nn.Linear):
         assert isinstance(self.weight_zero_point, torch.Tensor)
         assert isinstance(self.weight_axis, torch.Tensor)
         return _quantize_and_dequantize_weight(
+            self.weight, self.weight_qscheme, self.weight_dtype, self.weight_scale,
+            self.weight_zero_point, self.weight_axis)
+
+    def get_quantized_weight(self):
+        return _quantize_weight(
             self.weight, self.weight_qscheme, self.weight_dtype, self.weight_scale,
             self.weight_zero_point, self.weight_axis)
 
