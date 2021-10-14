@@ -9,6 +9,7 @@ namespace ir {
 
 // Helper that makes it easy to access the TsNode::shape() method
 // from an ir::Output that holds a Node* that points to a TsNode
+// TODO(whc) remove these once migrating to codegen and cleaning up Shape use
 lazy_tensors::Shape GetShapeFromTsOutput(const ir::Output& output);
 lazy_tensors::Shape GetShapeFromTsValue(const ir::Value& value);
 lazy_tensors::Shape GetShapeFromTsNode(const ir::Node& value);
@@ -54,7 +55,7 @@ class TsNode : public Node {
   TsNode(OpKind op, lazy_tensors::Shape shape, size_t num_outputs = 1,
          torch::lazy::hash_t hash_seed = kHashSeed);
 
-  virtual ~TsNode() {}
+  virtual ~TsNode() = default;
 
   lazy_tensors::Shape GetOpShape(
       const std::function<lazy_tensors::Shape()>& shape_fn) const;
@@ -70,8 +71,8 @@ class TsNode : public Node {
   virtual std::string ToString() const;
 
   static torch::lazy::hash_t GetOpHash(OpKind op,
-                                        const lazy_tensors::Shape& shape,
-                                        torch::lazy::hash_t hash_seed);
+                                       const lazy_tensors::Shape& shape,
+                                       torch::lazy::hash_t hash_seed);
 
   virtual const std::vector<Output>& operands() const override {
     return operands_as_outputs_;
